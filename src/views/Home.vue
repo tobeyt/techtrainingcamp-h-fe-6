@@ -9,9 +9,14 @@
           <el-input v-model="model.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" native-type="submit">进入游戏</el-button>
+          <el-button type="primary" native-type="submit" class="button"
+            >进入游戏</el-button
+          >
         </el-form-item>
       </el-form>
+      <div class="info">
+        <el-link type="info" href="#">游戏规则说明</el-link>
+      </div>
     </el-card>
   </div>
 </template>
@@ -35,5 +40,9 @@ export default {
 .home-card {
   width: 25rem;
   margin: 6rem auto;
+}
+
+.info {
+  margin-left: 15rem;
 }
 </style>
