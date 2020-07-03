@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <el-card header="【首页】" class="home-card">
+    <el-card header="【首页】" class="card">
       <el-form @submit.native.prevent="enterTheGame">
         <el-form-item label="名字">
           <el-input v-model="model.username"></el-input>
@@ -37,11 +37,6 @@ export default {
 </script>
 
 <style>
-.home-card {
-  width: 20rem;
-  margin: 6rem auto;
-}
-
 .info {
   margin-left: 12rem;
 }
