@@ -17,6 +17,7 @@
 </template>
 <script>
 export default {
+    // 设置默认提交分支
     data(){
         return {
             role: "预言家",
