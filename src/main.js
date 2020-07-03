@@ -6,6 +6,7 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 import http from "./http";
+import './plugins/element.js'
 // 所有网络请求通过 this.$http 调用
 Vue.prototype.$http = http;
 
