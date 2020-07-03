@@ -38,11 +38,11 @@ export default {
 
 <style>
 .home-card {
-  width: 25rem;
+  width: 20rem;
   margin: 6rem auto;
 }
 
 .info {
-  margin-left: 15rem;
+  margin-left: 12rem;
 }
 </style>
