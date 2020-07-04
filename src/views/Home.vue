@@ -29,14 +29,25 @@ export default {
     };
   },
   methods: {
-    enterTheGame() {
-      console.log(this.model);
+    async enterTheGame() {
+      const res = await this.$http.post("game", this.model);
+      localStorage.token = res.data.token;
+      this.$router.push("/");
+      this.$message({
+        type: "success",
+        message: "加入房间成功",
+      });
     },
   },
 };
 </script>
 
 <style>
+.card {
+  width: 20rem;
+  margin: 6rem auto;
+}
+
 .info {
   margin-left: 12rem;
 }
