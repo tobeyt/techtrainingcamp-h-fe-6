@@ -6,16 +6,29 @@
           <el-input v-model="model.username"></el-input>
         </el-form-item>
         <el-form-item label="房间号">
-          <el-input v-model="model.password"></el-input>
+          <el-input
+            v-model="model.roomid"
+            type="text"
+            placeholder="请输入四位字符"
+            minlength="4"
+            maxlength="4"
+            show-word-limit
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" native-type="submit" class="button"
+          <el-button
+            type="primary"
+            native-type="submit"
+            class="button"
+            :loading="true"
             >进入游戏</el-button
           >
         </el-form-item>
       </el-form>
       <div class="info">
-        <el-link type="info" href="#">游戏规则说明</el-link>
+        <el-link type="info" @click="$router.push('/rule')"
+          >游戏规则说明</el-link
+        >
       </div>
     </el-card>
   </div>
