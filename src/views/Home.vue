@@ -36,7 +36,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .home-card {
   width: 25rem;
   margin: 6rem auto;
