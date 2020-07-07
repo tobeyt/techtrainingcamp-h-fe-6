@@ -48,31 +48,33 @@
         name: 'God',
         data(){
             return {
-                tableData: [{
-                    name: 'wang',
-                    role:'预言家',
-                    status:true,
-                }, {
-                    name: 'dong',
-                    role:'平民',
-                    status:true,
-                }, {
-                    name: 'li',
-                    role:'平民',
-                    status:false,
-                }, {
-                    name: 'zhang',
-                    role:'狼人',
-                    status:true,
-                }, {
-                    name: 'yang',
-                    role:'猎人',
-                    status:true,
-                }, {
-                    name: 'huang',
-                    role:'女巫',
-                    status:true,
-                }]
+                tableData: [
+                // {
+                //     name: 'wang',
+                //     role:'预言家',
+                //     status:true,
+                // }, {
+                //     name: 'dong',
+                //     role:'平民',
+                //     status:true,
+                // }, {
+                //     name: 'li',
+                //     role:'平民',
+                //     status:false,
+                // }, {
+                //     name: 'zhang',
+                //     role:'狼人',
+                //     status:true,
+                // }, {
+                //     name: 'yang',
+                //     role:'猎人',
+                //     status:true,
+                // }, {
+                //     name: 'huang',
+                //     role:'女巫',
+                //     status:true,
+                // }
+                ]
             }
         },
         mounted:function(){
@@ -96,20 +98,9 @@
             handleDu(index, row) {
                 console.log(index, row);
             },
-            queryuser(){
-                /*在这里进行跨域请求*/
-                // this.axios({
-                //     method: "post",
-                //     url: "/api/"
-                // })
-                //     .then(res => {
-                //         console.log(res);
-                //         console.log(res.data);
-                //         this.tableData=res.data;
-                //     }).catch(function(err) {
-                //     console.log(err);
-                // });
-                /*在这里进行跨域请求*/
+            async queryuser(){
+                let result = await this.$http(`getAllPlayers`)
+                this.tableData=result.data.result;
             },
             endGame(){
 
