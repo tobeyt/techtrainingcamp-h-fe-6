@@ -31,7 +31,14 @@ export default {
   methods: {
     enterTheGame() {
       console.log(this.model);
-      this.$router.push('/player');
+      // 路由传参
+      this.$router.push({
+        path: `/player`,
+        query: {
+          name: this.model.username,
+          roomId: this.model.password
+        }
+      });
     },
   },
 };

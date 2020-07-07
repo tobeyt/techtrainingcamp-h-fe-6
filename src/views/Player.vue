@@ -20,28 +20,51 @@ export default {
     // 设置默认提交分支
     data(){
         return {
-            role: "预言家",
-            status: "游戏中"
+            role: "",
+            status: "游戏中",
+            name: "",
+            roomId: "",
         }
+    },
+    created() {
+        this.name = this.$route.query.name;
+        this.roomId = this.$route.query.roomId;
+        this.getRoleAndStatus();
     },
     methods:{
         //获取当前角色
-        getRole(){
-            let arr = ["预言家","狼人","守卫","猎人","女巫","平民"];
-            let random = Math.ceil( Math.random()*5);
-            this.role = arr[random];
+        getRoleAndStatus(){
+            this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`)
+            .then((res)=>{
+                if(res.status == 200){
+                    this.setRoleAndStatus(res.data)
+                }
+            }).catch((reason)=>{
+                console.log(reason)
+            })
         },
-
         // 状态刷新
         refresh() {
-            this.getRole();
+            this.getRoleAndStatus();
             console.log("状态刷新")
         },
 
         //查看比赛结果
         getResult() {
             console.log("查看结果")
+        },
+
+        // 设置角色和状态
+        setRoleAndStatus(data){
+            this.role = data.role;
+            if(data.status){
+                this.status = "游戏中"
+            }else {
+                this.status = "已死"
+            }
         }
+
+
     }
 }
 </script>
