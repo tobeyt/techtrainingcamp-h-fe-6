@@ -9,7 +9,7 @@
               <p>状态: {{ status }}</p>         
           </div>
           <div class="handle">
-              <el-button size="mini" @click="genxin">状态刷新</el-button>
+              <el-button size="mini" @click="update">状态刷新</el-button>
               <el-button size="mini" @click="getResult" :type="!status?'success':''">查看结果</el-button>
           </div>
       </el-card>
@@ -47,11 +47,8 @@ export default {
             }
         },
         // 状态刷新
-        // async refresh() {
-            
-        // },
 
-        genxin: throttle(async function(){
+        update: throttle(async function(){
                 await this.getRoleAndStatus();
                 this.$message({
                     message: "状态已刷新",
