@@ -8,5 +8,9 @@ const array = [1, 2, 3, 4, 5];
 array.forEach((cur) => cur + 1);
 console.log(array);
 
-let res = "女巫" in ["预言家", "女巫", "猎人", "平民"];
+let res = "test";
 console.log(res);
+
+let obj = { [res]: 1 };
+console.log(obj);
+
