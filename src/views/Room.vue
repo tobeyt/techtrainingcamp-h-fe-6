@@ -1,6 +1,6 @@
 <template>
   <div class="room-container">
-    <el-card class="room-card">
+    <el-card class="card">
       <el-row  type="flex" class="row-bg title" >
         <i class="el-icon-s-home"> [创建房间] </i>
       </el-row >
@@ -25,16 +25,28 @@ export default {
   },
   methods: {
     //生成四位不重复的随机房间号
-    getRoomId(length) {
-    let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    this.id =  arr.sort(() => Math.random() - 0.5).slice(0, length).join("")
-    this.flag = true
-    console.log(this.id);
+    async getRoomId(length) {
+      let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      this.id =  arr.sort(() => Math.random() - 0.5).slice(0, length).join("")
+      this.flag = true
+      console.log(this.id);
+      const res = await this.$http.post("https://afxltd.fn.thelarkcloud.com/createRoom", this.id);
+      console.log(res);
+      if(res.data.code == 422){
+        console.log('房间号已存在')
+      }else if(res.data.code == 200){
+        console.log('创建房间成功')
+      }
+      // this.$router.push("/gud");
+      // this.$message({
+      //   type: "success",
+      //   message: "创建房间成功",
+      // });
     },
   },
 };
 </script>
-<style scoped>
+<style>
 .title{
   color: #7babeb;
 }
