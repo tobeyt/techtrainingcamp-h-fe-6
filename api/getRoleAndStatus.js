@@ -10,5 +10,8 @@ module.exports = async function(params) {
       play.status = cur.status;
     }
   });
-  return play;
+  return {
+    code: 200,
+    data: play,
+  };
 };

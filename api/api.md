@@ -6,8 +6,8 @@ rooms:[{
         "name": String,
         "role": String,
         "status": Boolean,
-        "identities": [String]
-    }],    
+    }],
+    "identities": [String],    
 }]
 players:[{
     "name": String,

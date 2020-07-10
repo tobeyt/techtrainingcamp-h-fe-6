@@ -8,7 +8,7 @@ module.exports = async function({ roomid, win }) {
   };
   if (win === 0) {
     return {
-      code: 200,
+      code: 422,
       msg: "此局游戏无效",
     };
   } else if (win === 1) {

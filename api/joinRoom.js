@@ -39,7 +39,7 @@ module.exports = async function(params, context) {
   // 校验成功
   roomItem.players.push({
     name: name,
-    role: roomItem.identifies.pop(),
+    role: roomItem.identities.pop(),
     status: true,
   });
 

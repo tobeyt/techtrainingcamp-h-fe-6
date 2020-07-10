@@ -6,7 +6,7 @@ module.exports = async function({ roomid, win }) {
   const winers = [];
   if (win === 0) {
     return {
-      code: 200,
+      code: 422,
       msg: "都不得分",
     };
   } else if (win === 1) {
