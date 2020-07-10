@@ -55,9 +55,9 @@ export default {
 };
 </script>
 
-<style>
-.card {
-  width: 20rem;
+<style scoped>
+.home-card {
+  width: 25rem;
   margin: 6rem auto;
 }
 
