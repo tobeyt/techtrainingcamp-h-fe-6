@@ -37,27 +37,38 @@ export default {
         //获取当前角色
         async getRoleAndStatus(){
             try{
-                let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`)
+                let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`);
                 if(result.status == 200){
-                    let {data} = result;
+                    let {data} = result.data;
                     this.setRoleAndStatus(data);
                     this.loading = false;
                 }    
+                console.log(result);
             }catch(err) {
                 this.loading = false;
-                this.role = "身份加载失败";                
-                this.$message.error("网络错误");
+                this.role = "身份加载失败";             
             }
         },
-        // 状态刷新
 
+        // 状态刷新
         update: throttle(async function(){
+            try{
                 await this.getRoleAndStatus();
+                await this.getGameOverStatus(this.name,this.roomId);
                 this.$message({
                     message: "状态已刷新",
                     type: "success",
-                    duration: 1000
+                    duration: 800
                 })
+            }catch(err) {
+                this.$message({
+                    message: "网络错误",
+                    type: "error",
+                    duration: 800
+                });
+                console.log(err);
+            }
+
         },1000),
         
         //查看比赛结果
@@ -74,9 +85,22 @@ export default {
                 this.status = "已死";
             }
         },
+
+        // 设置当前游戏是否结束
+        setEndGame(flag) {
+            this.isOver = flag;
+        },
         
-        
-    }
+        //发起请求获取当前的游戏状态
+        async getGameOverStatus(name,roomId) {
+            let res = await this.$http(`getGameOverStatus?name=${name}&roomid=${roomId}`);
+            if(res.status == 200){
+                let {gameover} = res.data;
+                this.setEndGame(gameover); 
+                console.log(res);
+            }
+        }
+    },
 }
 </script>
 <style>
