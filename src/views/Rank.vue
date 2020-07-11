@@ -1,6 +1,6 @@
 <template>
     <div class="rank-container">
-        <el-card header="【排行榜】" class="card">
+        <el-card header="【排行榜】" class="rank-card">
             <el-table
                 :data="info"
                 class="rank-table">
@@ -10,7 +10,7 @@
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="wins"
+                    prop="win"
                     label="获胜数"
                     width="90">
                 </el-table-column>
@@ -42,22 +42,32 @@ export default {
             while (cnt --) {
                 const len = nextInt(18, 6);
                 const name = nextString(len);
-                const wins = nextInt(100);
-                arr.push({name, wins});
+                const win = nextInt(100);
+                arr.push({name, win});
             }
             return arr;
+        },
+        async getRankData() {
+            const res = await this.$http.get("https://afxltd.fn.thelarkcloud.com/getRank");
+            const obj = {name: 'NO NAME', win: 0};
+            return res.data.data.map(ii => ({...obj, ...ii}));
         }
     },
-    mounted() {
-        // TODO: 上一个页面可能需要传入玩家信息，让我查询这一局游戏的玩家获胜情况
-        // TODO: 换成加载数据
-        this.info = this.randomData(6)
-            .sort((a, b) => a.wins > b.wins);
+    async mounted() {
+        // this.info = this.randomData(6)
+        //     .sort((a, b) => a.wins > b.wins);
+        this.info = await this.getRankData();
+        console.log(this.info)
     }
 }
 </script>
 
 <style type="text/css">
+.rank-card {
+    width: 20rem;
+    margin: 6rem auto;
+}
+
 .rank-table {
     width: 90%;
     margin-bottom: 28px;
