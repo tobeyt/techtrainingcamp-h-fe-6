@@ -36,6 +36,8 @@ export default {
         //获取当前角色
         async getRoleAndStatus(){
             let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`)
+            console.log(result);
+            
             if(result.status == 200){
                 let {data} = result;
                 this.setRoleAndStatus(data);
