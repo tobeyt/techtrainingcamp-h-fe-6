@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <el-card header="【首页】" class="card">
+    <el-card header="【首页】" class="home-card">
       <el-form @submit.native.prevent="enterTheGame">
         <el-form-item label="名字">
           <el-input v-model="model.name"></el-input>
@@ -9,7 +9,7 @@
           <el-input
             v-model="model.roomid"
             type="text"
-            placeholder="请输入四位字符"
+            placeholder="请输入四位数字"
             minlength="4"
             maxlength="4"
             show-word-limit
@@ -59,7 +59,7 @@ export default {
 
 <style scoped>
 .home-card {
-  width: 25rem;
+  width: 20rem;
   margin: 6rem auto;
 }
 

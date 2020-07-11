@@ -1,7 +1,4 @@
-module.exports = async function(params, context) {
-  // 获取参数
-  const { name, roomid } = params;
-
+module.exports = async function({ name, roomid }, context) {
   // 获得表对象
   const RoomTable = larkcloud.db.table("rooms");
   const PlayerTable = larkcloud.db.table("players");
@@ -20,22 +17,25 @@ module.exports = async function(params, context) {
   if (!roomItem) {
     context.status(422);
     return {
-      code: 422,
-      msg: "房间号不存在",
+      error: -1,
+      msg: "请求失败",
+      data: "房间号不存在",
     };
   }
 
   // 判断昵称时候重复
-  roomItem.players.forEach((cur, index) => {
-    if (cur.name === name) {
-      context.status(422);
-      return {
-        code: 422,
-        msg: "用户昵称有重复",
-      };
-    }
-  });
+  const flag = roomItem.players.some((cur) =>
+    cur.name === name ? true : false
+  );
 
+  if (flag) {
+    context.status(422);
+    return {
+      error: -2,
+      msg: "请求失败",
+      data: "用户昵称有重复",
+    };
+  }
   // 校验成功
   roomItem.players.push({
     name: name,
@@ -47,7 +47,8 @@ module.exports = async function(params, context) {
   await PlayerTable.save(playerItem);
 
   return {
-    code: 200,
-    msg: "加入房间成功",
+    error: 0,
+    msg: "请求成功",
+    data: "加入房间成功",
   };
 };
