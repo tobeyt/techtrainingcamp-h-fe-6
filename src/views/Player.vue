@@ -9,8 +9,8 @@
               <p>状态: {{ status }}</p>         
           </div>
           <div class="handle">
-              <el-button size="mini" @click="update">状态刷新</el-button>
-              <el-button size="mini" @click="getResult" :type="!status?'success':''">查看结果</el-button>
+              <el-button @click="update" type="primary">状态刷新</el-button>
+              <el-button @click="getResult" :disabled="!isOver">查看结果</el-button>
           </div>
       </el-card>
   </el-container>
@@ -24,6 +24,7 @@ export default {
             status: "游戏中",
             name: "",
             roomId: "",
+            isOver: false,
             loading: true
         }
     },
@@ -35,12 +36,14 @@ export default {
     methods:{
         //获取当前角色
         async getRoleAndStatus(){
-            let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`)
-            if(result.status == 200){
-                let {data} = result;
-                this.setRoleAndStatus(data);
-                this.loading = false;
-            }else {
+            try{
+                let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`)
+                if(result.status == 200){
+                    let {data} = result;
+                    this.setRoleAndStatus(data);
+                    this.loading = false;
+                }    
+            }catch(err) {
                 this.loading = false;
                 this.role = "身份加载失败";                
                 this.$message.error("网络错误");
@@ -72,7 +75,6 @@ export default {
             }
         },
         
-        // 节流函数
         
     }
 }
