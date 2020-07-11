@@ -11,46 +11,45 @@ import Room from '../views/Room.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/rule',
-    name: 'Rule',
-    component: Rule
-  },
-  {
-    path: '/god',
-    name: 'God',
-    component: God
-  },
-  {
-    path: '/player',
-    name: 'Player',
-    component: Player
-  },
-  {
-    path: '/rank',
-    name: 'Rank',
-    component: Rank
-  },
-  {
-    path: '/result',
-    name: 'Result',
-    component: Result
-  },
-  {
-    path: '/room',
-    name: 'Room',
-    component: Room
-  },
+const routes = [{
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/rule',
+        name: 'Rule',
+        component: Rule
+    },
+    {
+        path: '/god',
+        name: 'God',
+        component: God
+    },
+    {
+        path: '/player',
+        name: 'Player',
+        component: Player
+    },
+    {
+        path: '/rank',
+        name: 'Rank',
+        component: Rank
+    },
+    {
+        path: '/result',
+        name: 'Result',
+        component: Result
+    },
+    {
+        path: '/room',
+        name: 'Room',
+        component: Room
+    },
 ]
 
 const router = new VueRouter({
-  routes
+    routes
 })
 
 export default router

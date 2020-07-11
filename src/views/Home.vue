@@ -42,13 +42,15 @@ export default {
     };
   },
   methods: {
-    async enterTheGame() {
-      const res = await this.$http.post("game", this.model);
-      localStorage.token = res.data.token;
-      this.$router.push("/");
-      this.$message({
-        type: "success",
-        message: "加入房间成功",
+    enterTheGame() {
+      console.log(this.model);
+      // 路由传参
+      this.$router.push({
+        path: `/player`,
+        query: {
+          name: this.model.username,
+          roomId: this.model.password
+        }
       });
     },
   },

@@ -3,7 +3,8 @@ import Vue from "vue";
 import router from "./router";
 
 const http = axios.create({
-  baseURL: "https://afxltd.fn.thelarkcloud.com/",
+    baseURL: 'https://afxltd.fn.thelarkcloud.com/',
+
 });
 
 http.interceptors.request.use(
