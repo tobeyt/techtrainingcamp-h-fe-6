@@ -64,8 +64,8 @@ export default {
 
         // 设置角色和状态
         setRoleAndStatus(data){
-            this.role = data.role;
-            if(data.status){
+            this.role = data.data.role;
+            if(data.data.status){
                 this.status = "游戏中";
             }else {
                 this.status = "已死";

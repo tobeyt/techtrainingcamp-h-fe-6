@@ -3,7 +3,7 @@
     <el-card header="【首页】" class="card">
       <el-form @submit.native.prevent="enterTheGame">
         <el-form-item label="名字">
-          <el-input v-model="model.username"></el-input>
+          <el-input v-model="model.name"></el-input>
         </el-form-item>
         <el-form-item label="房间号">
           <el-input
@@ -20,7 +20,7 @@
             type="primary"
             native-type="submit"
             class="button"
-            :loading="true"
+            :loading="false"
             >进入游戏</el-button
           >
         </el-form-item>
@@ -48,8 +48,8 @@ export default {
       this.$router.push({
         path: `/player`,
         query: {
-          name: this.model.username,
-          roomId: this.model.password
+          name: this.model.name,
+          roomId: this.model.roomid
         }
       });
     },
