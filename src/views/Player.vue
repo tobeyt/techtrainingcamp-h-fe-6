@@ -25,13 +25,25 @@ export default {
             name: "",
             roomId: "",
             isOver: false,
-            loading: true
+            loading: true,
+            timer: ""
         }
     },
     created() {
         this.name = this.$route.query.name;
         this.roomId = this.$route.query.roomId;
         this.getRoleAndStatus();
+    },
+    //页面挂载时设置一个定时器，每隔3s对当前状态进行一次刷新
+    mounted() {
+        this.timer = setInterval(this.update,3000) 
+    },
+    // 监控isOver的变化，当isOver发生改变时，清除定时器
+    watch: {
+        isOver(val,newVal){
+            console.log(val+" , "+newVal);
+            clearInterval(this.timer);
+        }
     },
     methods:{
         //获取当前角色
@@ -40,6 +52,7 @@ export default {
                 let result = await this.$http(`getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`);
                 if(result.status == 200){
                     let {data} = result.data;
+                    //将获取的数据传入setRoleAndStatus中，以便设置当前的角色以及状态
                     this.setRoleAndStatus(data);
                     this.loading = false;
                 }    
@@ -61,6 +74,7 @@ export default {
                     duration: 800
                 })
             }catch(err) {
+                clearInterval(this.timer);
                 this.$message({
                     message: "网络错误",
                     type: "error",
