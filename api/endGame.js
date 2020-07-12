@@ -1,13 +1,20 @@
-module.exports = async function({ roomid, win }) {
+module.exports = async function({ roomid, win }, context) {
   //win=0 都不得分 win=1 好人获胜 win=2 狼人获胜
   const RoomTable = larkcloud.db.table("rooms");
-  const roomItem = await RoomTable.where({ roomid }).findOne();
+  const PlayerTable = larkcloud.db.table("players");
 
-  const winers = [];
+  const roomItem = await RoomTable.where({ roomid }).findOne();
+  const playerList = await PlayerTable.where().find();
+
+
+  roomItem.gameOver = true;
+
   if (win === 0) {
+    context.status(422);
     return {
-      code: 422,
-      msg: "都不得分",
+      error: -1,
+      msg: "请求失败",
+      data: "手动强制结束游戏，都不的分",
     };
   } else if (win === 1) {
     roomItem.players.forEach((cur) => {
@@ -17,30 +24,34 @@ module.exports = async function({ roomid, win }) {
         cur.role === "猎人" ||
         cur.role === "平民"
       ) {
-        winers.push(cur.name);
+        roomItem.winner.push({ name: cur.name, role: cur.role });
+      } else {
+        roomItem.loser.push({ name: cur.name, role: cur.role });
       }
     });
   } else if (win === 2) {
     roomItem.players.forEach((cur) => {
       if (cur.role === "狼人") {
-        winers.push(cur.name);
+        roomItem.winner.push({ name: cur.name, role: cur.role });
+      } else {
+        roomItem.loser.push({ name: cur.name, role: cur.role });
       }
     });
   }
 
-  const PlayerTable = larkcloud.db.table("players");
-  const playerList = await PlayerTable.where().find();
   for (let i = 0; i < playerList.length; i++) {
-    for (let j = 0; j < winers.length; j++) {
-      if (playerList[i].name === winers[j]) {
+    for (let j = 0; j < roomItem.winner.length; j++) {
+      if (playerList[i].name === roomItem.winner[j].name) {
         playerList[i].win++;
       }
     }
   }
-
+  await RoomTable.save(roomItem);
   await PlayerTable.save(playerList);
+
   return {
-    code: 200,
-    msg: `${win === 1 ? "好人" : "狼人"}获胜`,
+    error: 0,
+    msg: "请求成功",
+    data: `${win === 1 ? "好人" : "狼人"}获胜`,
   };
 };

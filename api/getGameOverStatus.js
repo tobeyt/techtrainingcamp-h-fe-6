@@ -5,7 +5,7 @@ module.exports = async function({ roomid }) {
     error: 0,
     msg: "请求成功",
     data: {
-      count: roomItem.playersNumber,
+      gameOver: roomItem.gameOver,
     },
   };
 };

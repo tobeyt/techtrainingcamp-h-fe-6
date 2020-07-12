@@ -13,6 +13,8 @@ module.exports = async function({ roomid }, context) {
   return {
     error: 0,
     msg: "请求成功",
-    data: count,
+    data: {
+      count,
+    },
   };
 };
