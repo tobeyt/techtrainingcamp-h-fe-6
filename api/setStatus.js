@@ -5,7 +5,8 @@ module.exports = async function({ roomid, data }) {
   roomItem.players = data;
   await RoomTable.save(roomItem);
   return {
-    code: 200,
-    msg: "设置状态成功",
+    error: 0,
+    msg: "请求成功",
+    data: "设置状态成功",
   };
 };

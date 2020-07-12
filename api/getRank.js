@@ -10,9 +10,12 @@ module.exports = async function() {
     name: cur.name,
     win: cur.win,
   }));
-  
+
   return {
-    code: 200,
-    data: res,
+    error: 0,
+    msg: "请求成功",
+    data: {
+      rank: res,
+    },
   };
 };

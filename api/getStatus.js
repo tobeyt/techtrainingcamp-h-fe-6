@@ -9,7 +9,10 @@ module.exports = async function({ roomid }) {
   }));
 
   return {
-    code: 200,
-    data: result,
+    error: 0,
+    msg: "请求成功",
+    data: {
+      allPlayerStatus: result,
+    },
   };
 };
