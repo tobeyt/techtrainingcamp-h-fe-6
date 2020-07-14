@@ -6,16 +6,16 @@
         style="width: 100%"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="index" width="50"> </el-table-column>
-        <el-table-column label="角色" width="300">
+        <el-table-column type="index" width="20" fixed> </el-table-column>
+        <el-table-column label="角色" width="120" fixed>
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ `${scope.row.name}  是` }}</span>
-            <span style="margin-left: 10px" class="role-span">{{
+            <span style="margin-left: 10px">{{ `${scope.row.name}是` }}</span>
+            <span style="margin-left: 0px" class="role-span">{{
               `${scope.row.role}`
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.status === true"
@@ -59,15 +59,17 @@
 <script>
 export default {
   name: "God",
-  props: ["roomId"],
   data() {
     return {
       tableData: [],
+      roomid: "",
     };
   },
-  mounted: function() {
-    this.queryuser(); //需要触发的函数
+  created() {
+    this.roomid = this.$route.query.roomid;
+    this.queryuser();
   },
+
   methods: {
     tableRowClassName({ row }) {
       if (row.status) {
@@ -80,20 +82,21 @@ export default {
       console.log(index, row);
       this.tableData[index].status = false;
       console.log(this.tableData);
-      await this.$http(`setStatus?index=${index}&&roomid=${this.roomId}`);
+      await this.$http(`setStatus?index=${index}&&roomid=${this.roomid}`);
     },
+
     async queryuser() {
-      this.roomId = 1234;
-      let result = await this.$http(`getStatus?roomid=${this.roomId}`);
+      let result = await this.$http(`getStatus?roomid=${this.roomid}`);
       this.tableData = result.data.data.allPlayerStatus;
     },
+
     async endGame(type) {
       console.log(type);
-      await this.$http(`endGame?win=${type}&&roomid=${this.roomId}`);
+      await this.$http(`endGame?win=${type}&&roomid=${this.roomid}`);
       if (type === 0) {
         this.$router.push("/room");
       } else {
-        this.$router.push("/result");
+        this.$router.push({ path: "/result", query: { roomid: this.roomid } });
       }
     },
   },

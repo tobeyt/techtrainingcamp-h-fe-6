@@ -52,13 +52,14 @@ export default {
         let result = await this.$http(
           `getRoleAndStatus?name=${this.name}&roomid=${this.roomId}`
         );
-        if (result.status == 200) {
+        console.log(result);
+
+        if (result.data.error === 0) {
           let { data } = result.data;
           //将获取的数据传入setRoleAndStatus中，以便设置当前的角色以及状态
           this.setRoleAndStatus(data);
           this.loading = false;
         }
-        console.log(result);
       } catch (err) {
         this.loading = false;
         this.role = "身份加载失败";
@@ -88,13 +89,13 @@ export default {
 
     //查看比赛结果
     getResult() {
-      console.log("查看结果");
+      this.$router.push("/result");
     },
 
     // 设置角色和状态
     setRoleAndStatus(data) {
-      this.role = data.data.role;
-      if (data.data.status) {
+      this.role = data.role;
+      if (data.status) {
         this.status = "游戏中";
       } else {
         this.status = "已死";
@@ -112,8 +113,9 @@ export default {
         `getGameOverStatus?name=${name}&roomid=${roomId}`
       );
       if (res.status == 200) {
-        let { gameover } = res.data;
-        this.setEndGame(gameover);
+        console.log(res);
+        let { gameOver } = res.data.data;
+        this.setEndGame(gameOver);
         console.log(res);
       }
     },

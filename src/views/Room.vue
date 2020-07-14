@@ -4,7 +4,7 @@
       <div type="flex" class="row-bg title">
         <i class="el-icon-s-home"> [创建房间] </i>
         <div id="el">
-          <el-dropdown :hide-on-click="false">
+          <el-dropdown>
             <span class="el-dropdown-link "
               >参加游戏人数
               <i class="el-icon-arrow-down el-icon--right"></i>
@@ -27,14 +27,28 @@
         <h4>您的房间号是:</h4>
         <h2>{{ id }}</h2>
       </div>
-      <p class="wait" v-show="flag">正在等待其他玩家进入...</p>
+      <p class="wait" v-show="flag">
+        正在等待其他玩家进入（ <span>{{ enterNumber }}</span> 人/<span>{{
+          playersNumber
+        }}</span>
+        人 )
+      </p>
       <div class="create">
         <el-button
           type="primary"
           native-type="submit"
           class="button"
-          @click="getRoomId((len = 4))"
+          @click="getRoomId((len = 4), (num = 0))"
+          v-show="!flag"
           >创建房间</el-button
+        >
+        <el-button
+          type="primary"
+          native-type="submit"
+          class="button"
+          v-show="mark"
+          @click="startPlay"
+          >开始游戏</el-button
         >
       </div>
     </el-card>
@@ -64,23 +78,26 @@ export default {
         roomid: this.id,
         playersNumber: this.playersNumber,
       });
-      console.log(res);
-      if (res.status == 423) return this.$message.error("请选择房间人数");
-      if (res.status == 200) await this.$message.success("创建房间成功");
-      this.flag = true;
+      if (res.data.error === -2) {
+        this.$message.error("请选择房间人数");
+        return;
+      }
+      if (res.data.error === 0) {
+        this.$message.success("创建房间成功");
+        this.flag = true;
+      }
 
       //轮询显示进入房间人数
       let timer = setInterval(async () => {
-        await this.$http.get(`getPlayCount?roomid=${this.id}`);
+        const res = await this.$http.get(`getPlayCount?roomid=${this.id}`);
         this.enterNumber = res.data.data.count;
-        console.log(res.data.data.count);
-      }, 6000);
-
-      //判断房间人数是否已满
-      if (this.playersNumber === this.enterNumber) {
-        clearInterval(timer);
-        this.mark = !this.mark;
-      }
+        //判断房间人数是否已满
+        if (this.playersNumber === this.enterNumber) {
+          this.$message.success("房间人已满，可以开始游戏！");
+          clearInterval(timer);
+          this.mark = !this.mark;
+        }
+      }, 3000);
     },
 
     //获取选择的房间人数
@@ -91,7 +108,7 @@ export default {
 
     //开始游戏
     startPlay() {
-      this.$router.push({ path: "/gud", query: { roomid: this.id } });
+      this.$router.push({ path: "/god", query: { roomid: this.id } });
     },
   },
 };

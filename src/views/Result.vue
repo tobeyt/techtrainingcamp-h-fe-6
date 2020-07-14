@@ -31,7 +31,7 @@
       </el-table>
       <div class="info">
         <el-button type="primary" @click="gotoHome">回到首页</el-button>
-        <el-button type="primary" @click="gotoRank">排行版</el-button>
+        <el-button type="primary" @click="gotoRank">排行榜</el-button>
       </div>
     </el-card>
   </div>
@@ -56,9 +56,8 @@ export default {
       this.$router.push("/rank");
     },
     async getResult() {
-      const res = await this.$http.get("getResult", {
-        roomid: this.$route.params.roomid,
-      });
+      const res = await this.$http.get(`getResult?roomid=${this.roomid}`);
+      console.log(res);
       if (!res.data || res.data.error !== 0) {
         this.$message({
           message: (res.data.data && res.data.msg) || "获取数据失败",
@@ -73,6 +72,7 @@ export default {
     },
   },
   mounted() {
+    this.roomid = this.$route.query.roomid;
     this.getResult();
   },
 };

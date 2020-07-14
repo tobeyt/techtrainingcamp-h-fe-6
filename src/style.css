@@ -2,3 +2,8 @@
   width: 20rem;
   margin: 6rem auto;
 }
+
+html {
+  margin: 0;
+  padding: 0;
+}
