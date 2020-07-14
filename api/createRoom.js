@@ -1,4 +1,12 @@
 module.exports = async function({ roomid, playersNumber }, context) {
+  if (!playersNumber) {
+    context.status(423);
+    return {
+      error: -2,
+      msg: "请求失败",
+      data: "请选择本局游戏人数",
+    };
+  }
   const RoomTable = larkcloud.db.table("rooms");
   const res = await RoomTable.where({ roomid }).findOne();
   if (res) {
@@ -36,7 +44,7 @@ module.exports = async function({ roomid, playersNumber }, context) {
     identities: identities[playersNumber - 6],
     winner: [],
     loser: [],
-    gameOver: false
+    gameOver: false,
   });
   await RoomTable.save(roomItem);
   return {
