@@ -52,4 +52,5 @@ const router = new VueRouter({
     routes
 })
 
+// 路由守卫
 export default router
