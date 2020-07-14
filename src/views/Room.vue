@@ -1,9 +1,21 @@
 <template>
   <div class="room-container">
     <el-card class="card">
-      <el-row type="flex" class="row-bg title">
+      <div type="flex" class="row-bg title" >
         <i class="el-icon-s-home"> [创建房间] </i>
-      </el-row>
+         <div id="el">
+           <el-dropdown> 
+             <span class="el-dropdown-link ">参加游戏人数
+               <i class="el-icon-arrow-down el-icon--right"></i>
+             </span>
+             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="getPlayerNumber(num = 6)">6</el-dropdown-item>
+              <el-dropdown-item @click.native="getPlayerNumber(num = 7)">7</el-dropdown-item>
+              <el-dropdown-item @click.native="getPlayerNumber(num = 8)">8</el-dropdown-item>
+             </el-dropdown-menu>
+           </el-dropdown>
+          </div> 
+      </div>
       <div class="show-room">
         <h4>您的房间号是:</h4>
         <h2>{{ id }}</h2>
@@ -27,6 +39,9 @@ export default {
     return {
       id: "0000",
       flag: false,
+      mark:false,
+      playersNumber: 0,
+      enterNumber:0,
     };
   },
   methods: {
@@ -36,26 +51,45 @@ export default {
       this.id = arr
         .sort(() => Math.random() - 0.5)
         .slice(0, length)
-        .join("")
-        .toString();
-      this.flag = true;
-      console.log(this.id);
+        .join("");
+      console.log(this.id,this.playersNumber);
       const res = await this.$http.post(
         "createRoom",
-        { roomid: this.id }
+        { roomid: this.id,
+          playersNumber: this.playersNumber
+        }
       );
       console.log(res);
-      if (res.data.code == 422) {
-        console.log("房间号已存在");
-      } else if (res.data.code == 200) {
-        console.log("创建房间成功");
-      }
-      // this.$router.push("/gud");
-      // this.$message({
-      //   type: "success",
-      //   message: "创建房间成功",
-      // });
-    },
+      if (res.status == 423)  return this.$message.error('请选择房间人数');
+      if (res.status == 200)  await this.$message.success('创建房间成功')
+      this.flag = true;
+
+        //轮询显示进入房间人数
+        let timer = setInterval(async ()=> {
+          await this.$http.get(
+            `getPlayCount?roomid=${this.id}`,
+          )
+          this.enterNumber = res.data.data.count;
+          console.log(res.data.data.count);
+        },6000);
+
+        //判断房间人数是否已满
+        if(this.playersNumber == this.enterNumber){
+          clearInterval(timer);
+          this.mark = !this.mark;
+        } 
+    },  
+
+    //获取选择的房间人数
+    getPlayerNumber(number) {
+      this.playersNumber = number;
+      this.$message.success('成功选择'+this.playersNumber+"人局");
+     },
+
+     //开始游戏
+     startPlay() {
+       this.$router.push({path:'/gud', query:{roomid:this.id}})
+     }
   },
 };
 </script>
@@ -70,5 +104,18 @@ export default {
 }
 h2 {
   color: #f56c6c;
+}
+#el {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  top:-20px
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409EFF;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>
