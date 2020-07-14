@@ -49,7 +49,7 @@ export default {
       id: "0000",
       flag: false,
       mark:false,
-      playNumber: 0,
+      playersNumber: 0,
       enterNumber:0,
     };
   },
@@ -61,16 +61,16 @@ export default {
         .sort(() => Math.random() - 0.5)
         .slice(0, length)
         .join("");
-      //console.log(this.id,this.playNumber);
+      console.log(this.id,this.playersNumber);
       const res = await this.$http.post(
         "createRoom",
         { roomid: this.id,
-          playNumber: this.playNumber
+          playersNumber: this.playersNumber
         }
       );
-      //console.log(res);
-      if (res.status == 423) return this.$message.error('请选择房间人数')
-        await this.$message.success('创建房间成功')
+      console.log(res);
+      if (res.status == 423)  return this.$message.error('请选择房间人数');
+      if (res.status == 200)  await this.$message.success('创建房间成功')
       this.flag = true;
 
         //轮询显示进入房间人数
@@ -83,7 +83,7 @@ export default {
         },6000);
 
         //判断房间人数是否已满
-        if(this.playNumber == this.enterNumber){
+        if(this.playersNumber == this.enterNumber){
           clearInterval(timer);
           this.mark = !this.mark;
         } 
@@ -91,8 +91,8 @@ export default {
 
     //获取选择的房间人数
     getPlayerNumber(number) {
-      this.playNumber = number;
-      this.$message.success('选择人数成功');
+      this.playersNumber = number;
+      this.$message.success('成功选择'+this.playersNumber+"人局");
      },
 
      //开始游戏
