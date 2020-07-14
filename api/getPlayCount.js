@@ -1,9 +1,8 @@
-module.exports = async function({ roomid }, context) {
+module.exports = async function({ roomid }) {
   const RoomTable = larkcloud.db.table("rooms");
   const roomItem = await RoomTable.where({ roomid }).findOne();
   const count = roomItem.players.length;
   if (count > roomItem.playersNumber) {
-    context.status(422);
     return {
       error: -1,
       msg: "请求失败",

@@ -1,8 +1,7 @@
-module.exports = async function({ roomid }, context) {
+module.exports = async function({ roomid }) {
   const RoomTable = larkcloud.db.table("rooms");
   const roomItem = await RoomTable.where({ roomid }).findOne();
   if (!roomItem.gameOver) {
-    context.status(422);
     return {
       error: -1,
       msg: "请求失败",
@@ -15,9 +14,9 @@ module.exports = async function({ roomid }, context) {
     roomItem.winner[0].role === "猎人" ||
     roomItem.winner[0].role === "平民"
   ) {
-    win = 0;
-  } else if (roomItem.winner[0].role === "狼人") {
     win = 1;
+  } else if (roomItem.winner[0].role === "狼人") {
+    win = 2;
   }
   return {
     error: 0,

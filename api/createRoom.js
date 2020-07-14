@@ -1,6 +1,5 @@
-module.exports = async function({ roomid, playersNumber }, context) {
-  if (!playersNumber) {
-    context.status(423);
+module.exports = async function ({ roomid, playersNumber }) {
+  if (playersNumber === 0) {
     return {
       error: -2,
       msg: "请求失败",
@@ -10,7 +9,6 @@ module.exports = async function({ roomid, playersNumber }, context) {
   const RoomTable = larkcloud.db.table("rooms");
   const res = await RoomTable.where({ roomid }).findOne();
   if (res) {
-    context.status(422);
     return {
       error: -1,
       msg: "请求失败",

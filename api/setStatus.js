@@ -1,8 +1,8 @@
-module.exports = async function({ roomid, data }) {
+module.exports = async function({ roomid, index }) {
   const RoomTable = larkcloud.db.table("rooms");
   const roomItem = await RoomTable.where({ roomid }).findOne();
 
-  roomItem.players = data;
+  roomItem.players[index].status = false;
   await RoomTable.save(roomItem);
   return {
     error: 0,

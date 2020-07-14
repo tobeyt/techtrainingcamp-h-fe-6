@@ -1,4 +1,4 @@
-module.exports = async function({ name, roomid }, context) {
+module.exports = async function({ name, roomid }) {
   // 获得表对象
   const RoomTable = larkcloud.db.table("rooms");
   const PlayerTable = larkcloud.db.table("players");
@@ -15,27 +15,26 @@ module.exports = async function({ name, roomid }, context) {
   }).findOne();
 
   if (!roomItem) {
-    context.status(422);
     return {
       error: -1,
       msg: "请求失败",
       data: "房间号不存在",
     };
   }
-
+  console.log(name)
   // 判断昵称时候重复
   const flag = roomItem.players.some((cur) =>
     cur.name === name ? true : false
   );
 
   if (flag) {
-    context.status(422);
     return {
       error: -2,
       msg: "请求失败",
       data: "用户昵称有重复",
     };
   }
+
   // 校验成功
   roomItem.players.push({
     name: name,

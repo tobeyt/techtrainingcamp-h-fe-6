@@ -1,4 +1,4 @@
-module.exports = async function({ roomid, win }, context) {
+module.exports = async function({ roomid, win }) {
   //win=0 都不得分 win=1 好人获胜 win=2 狼人获胜
   const RoomTable = larkcloud.db.table("rooms");
   const PlayerTable = larkcloud.db.table("players");
@@ -9,14 +9,13 @@ module.exports = async function({ roomid, win }, context) {
 
   roomItem.gameOver = true;
 
-  if (win === 0) {
-    context.status(422);
+  if (win === '0') {
     return {
       error: -1,
       msg: "请求失败",
       data: "手动强制结束游戏，都不的分",
     };
-  } else if (win === 1) {
+  } else if (win === '1') {
     roomItem.players.forEach((cur) => {
       if (
         cur.role === "预言家" ||
@@ -29,7 +28,7 @@ module.exports = async function({ roomid, win }, context) {
         roomItem.loser.push({ name: cur.name, role: cur.role });
       }
     });
-  } else if (win === 2) {
+  } else if (win === '2') {
     roomItem.players.forEach((cur) => {
       if (cur.role === "狼人") {
         roomItem.winner.push({ name: cur.name, role: cur.role });
@@ -52,6 +51,6 @@ module.exports = async function({ roomid, win }, context) {
   return {
     error: 0,
     msg: "请求成功",
-    data: `${win === 1 ? "好人" : "狼人"}获胜`,
+    data: `${win === '1' ? "好人" : "狼人"}获胜`,
   };
 };
