@@ -18,17 +18,17 @@
                                 v-if="scope.row.status===true"
                                 type="primary"
                                 size="mini"
-                                @click="handleDao(scope.$index, scope.row)">被刀</el-button>
+                                @click="handleKill(scope.$index, scope.row)">被刀</el-button>
                         <el-button
                                 v-if="scope.row.status===true"
                                 type="success"
                                 size="mini"
-                                @click="handleLie(scope.$index, scope.row)">猎杀</el-button>
+                                @click="handleKill(scope.$index, scope.row)">猎杀</el-button>
                         <el-button
                                 v-if="scope.row.role!=='女巫'&&scope.row.status===true"
                                 type="warning"
                                 size="mini"
-                                @click="handleDu(scope.$index, scope.row)">毒死</el-button>
+                                @click="handleKill(scope.$index, scope.row)">毒死</el-button>
                         <el-button
                                 v-if="scope.row.status===false"
                                 type="danger"
@@ -38,7 +38,9 @@
                 </el-table-column>
             </el-table>
             <div style="margin-top: 20px">
-                <el-button type="danger" class="endGame-button" @click="endGame">强行结束</el-button>
+                <el-button type="danger"  @click="endGame(0)">强行结束</el-button>
+                <el-button type="primary" @click="endGame(1)">神民胜利</el-button>
+                <el-button type="warning" @click="endGame(2)">狼人胜利</el-button>
             </div>
         </el-card>
     </el-container>
@@ -46,35 +48,10 @@
 <script>
     export default {
         name: 'God',
+        props: ['roomId'],
         data(){
             return {
-                tableData: [
-                // {
-                //     name: 'wang',
-                //     role:'预言家',
-                //     status:true,
-                // }, {
-                //     name: 'dong',
-                //     role:'平民',
-                //     status:true,
-                // }, {
-                //     name: 'li',
-                //     role:'平民',
-                //     status:false,
-                // }, {
-                //     name: 'zhang',
-                //     role:'狼人',
-                //     status:true,
-                // }, {
-                //     name: 'yang',
-                //     role:'猎人',
-                //     status:true,
-                // }, {
-                //     name: 'huang',
-                //     role:'女巫',
-                //     status:true,
-                // }
-                ]
+                tableData: []
             }
         },
         mounted:function(){
@@ -89,21 +66,25 @@
                 }
 
             },
-            handleDao(index, row) {
+            async handleKill(index, row) {
                 console.log(index, row);
-            },
-            handleLie(index, row) {
-                console.log(index, row);
-            },
-            handleDu(index, row) {
-                console.log(index, row);
+                this.tableData[index].status = false;
+                console.log(this.tableData)
+                await this.$http(`setStatus?index=${index}&&roomid=${this.roomId}`)
             },
             async queryuser(){
-                let result = await this.$http(`getAllPlayers`)
-                this.tableData=result.data.result;
+                this.roomId=1234;
+                let result = await this.$http(`getStatus?roomid=${this.roomId}`)
+                this.tableData=result.data.data.allPlayerStatus;
             },
-            endGame(){
-
+            async endGame(type){
+                console.log(type)
+                await this.$http(`endGame?win=${type}&&roomid=${this.roomId}`)
+                if(type===0){
+                    this.$router.push("/room");
+                }else {
+                    this.$router.push("/result");
+                }
             },
         }
     }
