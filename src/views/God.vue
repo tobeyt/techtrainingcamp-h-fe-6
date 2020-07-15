@@ -39,11 +39,25 @@
               >毒死</el-button
             >
             <el-button
+                  v-if="scope.row.status === true"
+                  type="danger"
+                  size="mini"
+                  @click="handleKill(scope.$index, scope.row)"
+            >投死</el-button
+            >
+            <el-button
               v-if="scope.row.status === false"
               type="danger"
               size="mini"
               disabled
               >已死亡</el-button
+            >
+            <el-button
+              v-if="scope.row.status === false"
+              type="info"
+              size="mini"
+              @click="handleKill(scope.$index, scope.row)"
+              >解药</el-button
             >
           </template>
         </el-table-column>
@@ -62,7 +76,7 @@ export default {
   data() {
     return {
       tableData: [],
-      roomid: "",
+      roomid: null,
     };
   },
   created() {
@@ -80,12 +94,17 @@ export default {
     },
     async handleKill(index, row) {
       console.log(index, row);
-      this.tableData[index].status = false;
-      console.log(this.tableData);
-      await this.$http(`setStatus?index=${index}&&roomid=${this.roomid}`);
+      if(this.tableData[index].status){
+          this.tableData[index].status = false;
+          await this.$http(`setStatus?index=${index}&&roomid=${this.roomid}`);
+      }else{
+          this.tableData[index].status = true;
+          await this.$http(`setStatus?index=${index}&&roomid=${this.roomid}`);
+      }
     },
 
     async queryuser() {
+        //this.roomid=1234;
       let result = await this.$http(`getStatus?roomid=${this.roomid}`);
       this.tableData = result.data.data.allPlayerStatus;
     },
