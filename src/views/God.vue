@@ -43,7 +43,7 @@
                   type="danger"
                   size="mini"
                   @click="handleKill(scope.$index, scope.row)"
-            >投死</el-button
+            >公投</el-button
             >
             <el-button
               v-if="scope.row.status === false"
