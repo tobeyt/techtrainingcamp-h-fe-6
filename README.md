@@ -1,24 +1,2 @@
-# techtrainingcamp-h-fe-6
-
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# API 文档
+[API文档必看](https://kaif06g1ci.feishu.cn/docs/doccnh0l8aGlCdXWF6kwk74Vmbb)

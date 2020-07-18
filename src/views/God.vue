@@ -7,7 +7,7 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="index" width="20" fixed> </el-table-column>
-        <el-table-column label="角色" width="120" fixed>
+        <el-table-column label="角色" width="150" fixed>
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ `${scope.row.name}是` }}</span>
             <span style="margin-left: 0px" class="role-span">{{
